@@ -85,17 +85,25 @@ def membership_menu():
 # Function to add a member
 def add_member():
     global membership
-    name = input("Enter new member's name: ").strip()
-    original_name = name # create new variable so names can be edited later on
-    suffix = 1 # To help if any names are duplicates
+    while True:
+        name = input("Enter new member's name (or type 'Y' to stop adding members): ").strip()
+        if name.upper() == "Y": # Once user wants to stop adding names, input 'Y'
+            print("Finsihed adding new members") # Confirm to user that they have stopped entring names, will then return to membership menu
+            break # End the loop if user enter 'Y'
+        if not name: # Check if name is empty
+            print("Name cannot be empty, please enter a valid name")# Prompt user to enter a valid name
+            continue # Return to th start of the loop
+    
+        original_name = name # create new variable so names can be edited later on
+        suffix = 1 # To help if any names are duplicates
 
-    # check to see if name already exists
-    while name in membership:
-        name = original_name + "_" + str(suffix)
-        suffix += 1 # If the name already exists in the list add 1 to the end of the name
+        # check to see if name already exists
+        while name in membership:
+            name = original_name + "_" + str(suffix)
+            suffix += 1 # If the name already exists in the list add 1 to the end of the name
 
-    membership[name] = {"status": "active", "join_date": "today", "leave_date": None }
-    print("Memeber '" + str(name) + "' has been added.")
+        membership[name] = {"status": "active"}
+        print("Memeber '" + str(name).capitalize() + "' has been added.")
 
 #Function to remove a name from the list
 def withdraw_member():
@@ -103,21 +111,19 @@ def withdraw_member():
     name = input("Enter the name of the member you would like to withdraw ") # Prompt user to enter name they would like to remove
     if name in membership and membership[name]["status"] == "active": # Check to see if the name is in the list and is an 'active' member
         membership[name]["status"] = "inactive" # Change membership status to inactive
-        membership[name]["leave_date"] = "today" # Change the leave date to 'today'
-        print("Member '" + name + "' has been removed") # Confirm to the user that the name has been removed
+        print("Member '" + name.capitalize() + "' has been removed") # Confirm to the user that the name has been removed
     else:
         print("Member has not been found or has already been removed.") # For names that are not in the list or have already been removed
 
 #Function to reinstate a member
 def reinstate_member():
     global membership
-    name = input("Enter the name of the member you want to rienstate")
+    name = input("Enter the name of the member you want to rienstate: ")
     if name in membership and membership[name]["status"] == "inactive": # Check if name is in the list and has been removed previously
         membership[name]["status"] = "active" # Change status to 'active'
-        membership[name]["leave_date"] = None # Remove leave date
-        print( "Member '" + name + "'has been reinstated")# Confirm to user that member has been reinstated
+        print( "Member '" + name.capitalize() + "'has been reinstated")# Confirm to user that member has been reinstated
     else:
-        print ("Member '" + name + "' is not in the list or has not been removed")
+        print ("Member '" + name.capitalize() + "' is not in the list or has not been removed")
 
 # Function to create a new book club
 def create_new_book_club():
@@ -137,7 +143,7 @@ def enter_marks():
     global meetings, membership
     title = input("Enter book title: ").strip() # Prompt user to enter name of the book
     author = input("Enter the name of the author: ") # Prompt user to enter the name of the author
-    genre = input("Enter the genre (horror/sci-fi/fantasy/post-apocalyptic): ") # Prompt user to enter the genre of the book
+    genre = input("Enter the genre (Horror/Sci-fi/Fantasy/Post-Apocalyptic): ") # Prompt user to enter the genre of the book
 
     scores = {} # set up empty dictionary for scores
     for member, details in membership.items():
@@ -167,15 +173,15 @@ def enter_marks():
 
     # Display stats to the user
     print("\n--- Meeting Statistics ---")
-    print("Book Title: " + title )
-    print("Author: " + author )
-    print("Genre: " + genre )
+    print("Book Title: " + title.capitalize() )
+    print("Author: " + author.capitalize() )
+    print("Genre: " + genre.capitalize() )
     print("Mean Score: " + (str(round(mean_score, 2)) if valid_scores else "N/A")) # Display stats to 2 deciml places
     print("Standard Deviation: '" + (str(round(st_dev, 2)) if valid_scores else "N/A"))
     print("Highest Score: '" + (str(round(max_score, 2)) if valid_scores else "N/A"))
     print("Lowest Score: '" + (str(round(min_score, 2)) if valid_scores else "N/A"))
 
-    print("\nScores for '" + title + "' have been recorded") # Confirm scores have been recorded
+    print("\nScores for '" + title.capitalize() + "' have been recorded") # Confirm scores have been recorded
     print("Returning to main menu")
         
  
@@ -203,20 +209,21 @@ def meeting_details():
     title = input("Enter the name of the book you would like to review: ") # Prompt user to enter the book they would like to review
     if title in meetings: # Check if the name is in the list 'meetings'
         meeting = meetings[title]
-        print("\nBook Title:", title) # Print the title of the book
-        print("Author:", meeting["Author"]) # Print the author of the book
-        print("Genre:", meeting["Genre"]) # Print the genre of the book
+        print("\nBook Title:", title.capitalize()) # Print the title of the book
+        print("Author:", meeting["Author"].capitalize()) # Print the author of the book
+        print("Genre:", meeting["Genre"].capitalize()) # Print the genre of the book
         print("Scores: ")
         for member,score in meeting["Scores"].items(): # Print out each member and their scores for the meeting
-            print("  " + member + ": " + (str(score) if score is not None else "Missing")) # If a member missed a meeting. output 'meeting'
+            print("  " + member.capitalize() + ": " + (str(score) if score is not None else "Missing")) # If a member missed a meeting. output 'meeting'
         print("Statistics: ") 
         for stat, value in meeting["Stats"].items(): # Print the summary statistics for the meeting
             print("  " + stat.capitalize() + ": " + str(round(value,2))) # Round to 2 decimal places
     else:
-        print("There are no details availabe for '" + title +"' . ")
+        print("There are no details availabe for '" + title.capitalize() +"' . ")
 
 # Function to view stats of specific members
-
+def member_details():
+    name = input("Enter the name of the member you want to review").strip() # Prompt the user to enter a name
     
 
 
