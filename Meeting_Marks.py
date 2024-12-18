@@ -142,7 +142,7 @@ def enter_marks():
     scores = {} # set up empty dictionary for scores
     for member, details in membership.items():
         if details["status"] == "active": # Check if the member is active
-            score = input("Enter score for " + member + " (leave blank for missing): ").strip # Prompt user to enter the score
+            score = input("Enter score for " + member + " (leave blank for missing): ").strip() # Prompt user to enter the score
             scores[member] = float(score) if score else None # Store the scores in a new dictionary with the members name, store 'None' if no score is entered
 
 
