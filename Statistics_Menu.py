@@ -143,7 +143,15 @@ def enter_marks():
     global meetings, membership
     title = input("Enter book title: ").strip() # Prompt user to enter name of the book
     author = input("Enter the name of the author: ") # Prompt user to enter the name of the author
-    genre = input("Enter the genre (Horror/Sci-fi/Fantasy/Post-Apocalyptic): ") # Prompt user to enter the genre of the book
+
+    valid_genres = ["horror", "sci-fi", "fantasy", "post- apocalyptic"]
+
+    while True:
+        genre = input("Enter the genre of the book (Horror/Sci-fi/Fantasy/Post-Apocalyptic): ").strip()
+        if genre in valid_genres:
+            break
+        else:
+            print("Invalid genre. Please enter one of the following, Horror, Sci-fi, Fantasy, post apocalyptic : ")
 
     scores = {} # set up empty dictionary for scores
     for member, details in membership.items():
