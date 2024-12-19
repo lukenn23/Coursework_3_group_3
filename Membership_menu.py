@@ -39,7 +39,7 @@ def main_menu():
         print("\nMain Menu:")# Title for main menu
         print("1. Manage Memberships")# Option to edit memberships
         print("2. Enter marks for a meeting")# Option to add marks for a meeting
-        print("3. Retrive stats for a book and for members")# Option to vieew marks from previous meetings/books
+        print("3. Retrive stats for a book and for members")# Option to view marks from previous meetings/books
         print("4. Exit")# Option to exit the program
         choice = input("Choose an option: ")
 
@@ -51,7 +51,7 @@ def main_menu():
             stats_menu() # call a function to view stats
         elif choice == "4":
             save_data() # Call a function to save the data
-            print("Exiting program")# Mesage when exiting the peogram
+            print("Exiting program")# Message when exiting the program
             break # End the loop
         else:
             print("Invalid option. Try again.") # Error message if an invalid option is selected
@@ -95,7 +95,7 @@ def add_member():
         suffix += 1 # If the name already exists in the list add 1 to the end of the name
 
     membership[name] = {"status": "active", "join_date": "today", "leave_date": None }
-    print("Memeber '" + str(name) + "' has been added.")
+    print("Member '" + str(name) + "' has been added.")
 
 #Function to remove a name from the list
 def withdraw_member():
@@ -111,7 +111,7 @@ def withdraw_member():
 #Function to reinstate a member
 def reinstate_member():
     global membership
-    name = input("Enter the name of the member you want to rienstate")
+    name = input("Enter the name of the member you want to reinstate: ")
     if name in membership and membership[name]["status"] == "inactive": # Check if name is in the list and has been removed previously
         membership[name]["status"] = "active" # Change status to 'active'
         membership[name]["leave_date"] = None # Remove leave date
@@ -122,7 +122,7 @@ def reinstate_member():
 # Function to create a new book club
 def create_new_book_club():
         global membership, meetings
-        confirm = input("Please confirm that you want to create a new book club? (Enter 'yes' or 'no') This will remove all current data. ").strip()
+        confirm = input("Please confirm that you want to create a new book club? (Enter 'yes' or 'no') This will remove all current data. ").strip().lower()
         if confirm == "yes":
             membership = {} # Reset membership list
             meetings = {} # Reset meetings list
