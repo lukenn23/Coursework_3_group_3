@@ -2,12 +2,12 @@ import pickle
 import shelve
 
 # Define global variables
-membership = {}
-meetings = {}
+membership = {} # dictionary to store member details
+meetings = {} # dictionary to store meeting details
 
 # Define file names
-membership_file = "membership.pkl"
-meetings_file = "meetings.pkl"
+membership_file = "membership.pkl" # file for storing membership data
+meetings_file = "meetings.pkl" # file for storing meeting data
 
 
 # Functions to save data to files
@@ -39,9 +39,9 @@ def main_menu():
         print("\nMain Menu:")# Title for main menu
         print("1. Manage Memberships")# Option to edit memberships
         print("2. Enter marks for a meeting")# Option to add marks for a meeting
-        print("3. Retrive stats for a book and for members")# Option to vieew marks from previous meetings/books
+        print("3. Retrive stats for a book or for members")# Option to view marks from previous meetings/books
         print("4. Exit")# Option to exit the program
-        choice = input("Choose an option: ")
+        choice = input("Choose an option: ").strip()
 
         if choice == "1":
             membership_menu()# call a function for membership menu
@@ -51,7 +51,7 @@ def main_menu():
             stats_menu() # call a function to view stats
         elif choice == "4":
             save_data() # Call a function to save the data
-            print("Exiting program")# Mesage when exiting the peogram
+            print("Exiting program")# Message when exiting the program
             break # End the loop
         else:
             print("Invalid option. Try again.") # Error message if an invalid option is selected
@@ -65,7 +65,7 @@ def membership_menu():
         print("3. Reinstate Member")
         print("4. Create New Book Club")
         print("5. Return To Main Menu")
-        choice = input("Choose an option: ")
+        choice = input("Choose an option: ").strip()
 
         if choice == "1": # Create a loop similiar for the main menu where each option corresponds to a function
             add_member()
