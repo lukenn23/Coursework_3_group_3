@@ -92,7 +92,7 @@ def add_member():
             break # End the loop if user enter 'Y'
         if not name: # Check if name is empty
             print("Name cannot be empty, please enter a valid name")# Prompt user to enter a valid name
-            continue # Return to th start of the loop
+            continue # Return to the start of the loop
     
         original_name = name # create new variable so names can be edited later on
         suffix = 1 # To help if any names are duplicates
@@ -103,12 +103,12 @@ def add_member():
             suffix += 1 # If the name already exists in the list add 1 to the end of the name
 
         membership[name] = {"status": "active"}
-        print("Memeber '" + str(name).capitalize() + "' has been added.")
+        print("Member '" + str(name).capitalize() + "' has been added.")
 
 #Function to remove a name from the list
 def withdraw_member():
     global membership
-    name = input("Enter the name of the member you would like to withdraw ") # Prompt user to enter name they would like to remove
+    name = input("Enter the name of the member you would like to withdraw ").strip() # Prompt user to enter name they would like to remove
     if name in membership and membership[name]["status"] == "active": # Check to see if the name is in the list and is an 'active' member
         membership[name]["status"] = "inactive" # Change membership status to inactive
         print("Member '" + name.capitalize() + "' has been removed") # Confirm to the user that the name has been removed
@@ -118,7 +118,7 @@ def withdraw_member():
 #Function to reinstate a member
 def reinstate_member():
     global membership
-    name = input("Enter the name of the member you want to rienstate: ")
+    name = input("Enter the name of the member you want to reinstate: ").strip()
     if name in membership and membership[name]["status"] == "inactive": # Check if name is in the list and has been removed previously
         membership[name]["status"] = "active" # Change status to 'active'
         print( "Member '" + name.capitalize() + "'has been reinstated")# Confirm to user that member has been reinstated
@@ -142,30 +142,35 @@ def create_new_book_club():
 def enter_marks():
     global meetings, membership
     title = input("Enter book title: ").strip() # Prompt user to enter name of the book
-    author = input("Enter the name of the author: ") # Prompt user to enter the name of the author
+    author = input("Enter the name of the author: ").strip() # Prompt user to enter the name of the author
 
-    valid_genres = ["horror", "sci-fi", "fantasy", "post- apocalyptic"]
+    valid_genres = ["horror", "sci-fi", "fantasy", "post-apocalyptic"]
 
     while True:
         genre = input("Enter the genre of the book (Horror/Sci-fi/Fantasy/Post-Apocalyptic): ").strip()
         if genre in valid_genres:
             break
         else:
-            print("Invalid genre. Please enter one of the following, Horror, Sci-fi, Fantasy, post apocalyptic : ")
+            print("Invalid genre. Please enter one of the following, Horror, Sci-fi, Fantasy, Post-Apocalyptic : ")
 
     scores = {} # set up empty dictionary for scores
     for member, details in membership.items():
         if details["status"] == "active": # Check if the member is active
-            score = input("Enter score for " + member + " out of 10 (leave blank for missing): ").strip() # Prompt user to enter the score
-            scores[member] = float(score) if score else None # Store the scores in a new dictionary with the members name, store 'None' if no score is entere
+            while True:
+                try:
+                    score = input("Enter score for " + member + " out of 10 (leave blank for missing): ").strip() # Prompt user to enter the score
+                    scores[member] = float(score) if score else None # Store the scores in a new dictionary with the members name, store 'None' if no score is entere
+                    break
+                except ValueError:
+                    print("Invalid score! Please enter a number between 0 and 10.")
     
     valid_scores = [score for score in scores.values() if score is not None] # Filter out the scores that do not have a value
     
     mean_score =  sum(valid_scores) / len(valid_scores) if valid_scores else 0 # Calculate the mean
     max_score = max(valid_scores, default = 0) # Find the highest score
     min_score = min(valid_scores, default = 0) # Find the lowest score
-    variance = sum((score - mean_score)**2 for score in valid_scores)/ len(valid_scores) if valid_scores else 0 # Calculate the variance
-    st_dev = variance **0.5 # Square root of the variance to find standard deviation
+    variance = sum((score - mean_score) ** 2 for score in valid_scores)/ len(valid_scores) if valid_scores else 0 # Calculate the variance
+    st_dev = variance ** 0.5 # Square root of the variance to find standard deviation
 
     meetings[title] = {
         "Author": author,
@@ -200,7 +205,7 @@ def stats_menu():
         print("1. View Meeting Details")
         print("2. View member Statistics")
         print("3. Back to Main Menu")
-        choice = input("Choose an option(1-3): ")
+        choice = input("Choose an option(1-3): ").strip()
 
         if choice == "1":
             meeting_details()# Function to view meeting details
@@ -209,25 +214,25 @@ def stats_menu():
         elif choice =="3":
             break
         else:
-            print("Invalid Option. Enter a number (1-3): ") # Prompt to retry if user doesnt enter a 1, 2 or 3
+            print("Invalid option. Enter a number (1-3): ") # Prompt to retry if user doesnt enter a 1, 2 or 3
 
 
 # Function to view meeting details
 def meeting_details():
-    title = input("Enter the name of the book you would like to review: ") # Prompt user to enter the book they would like to review
+    title = input("Enter the name of the book you would like to review: ").strip() # Prompt user to enter the book they would like to review
     if title in meetings: # Check if the name is in the list 'meetings'
         meeting = meetings[title]
         print("\nBook Title:", title.capitalize()) # Print the title of the book
         print("Author:", meeting["Author"].capitalize()) # Print the author of the book
         print("Genre:", meeting["Genre"].capitalize()) # Print the genre of the book
         print("Scores: ")
-        for member,score in meeting["Scores"].items(): # Print out each member and their scores for the meeting
+        for member, score in meeting["Scores"].items(): # Print out each member and their scores for the meeting
             print("  " + member.capitalize() + ": " + (str(score) if score is not None else "Missing")) # If a member missed a meeting. output 'meeting'
         print("Statistics: ") 
         for stat, value in meeting["Stats"].items(): # Print the summary statistics for the meeting
             print("  " + stat.capitalize() + ": " + str(round(value,2))) # Round to 2 decimal places
     else:
-        print("There are no details availabe for '" + title.capitalize() +"' . ")
+        print("There are no details availabe for '" + title.capitalize() +"' . ") # book not found
 
 # Function to view stats of specific members
 def member_statistics():
@@ -246,7 +251,7 @@ def member_statistics():
         # Calculate statistics for the member
         if valid_scores:
             mean = sum(valid_scores) / len(valid_scores) # Calculate mean, only use scores that are not 'missing'
-            st_dev = (sum((x - mean) ** 2 for x in valid_scores) / len(valid_scores)*0.5) # Calculate Standard Deviation
+            st_dev = (sum((x - mean) ** 2 for x in valid_scores) / len(valid_scores)) ** 0.5 # Calculate Standard Deviation
             min_score = min(valid_scores) # Lowest value user has given
             max_score = max(valid_scores) # Highest score user has given
             missed = len(scores) - len(valid_scores) # Calculate number of 'missing' scores (number of meetings missed)
@@ -256,7 +261,7 @@ def member_statistics():
             print(" Mean Score " + str(round(mean, 2)))
             print(" Standard Deviation " + str(round(st_dev, 2)))
             print(" Lowest Score: " + str(min_score))
-            print(" Highest score: " + str(max_score))
+            print(" Highest Score: " + str(max_score))
             print(" Meetings Missed: " + str(round(missed_percent, 2 )) + "%")
         else:
             print("No score available")
