@@ -261,12 +261,7 @@ def member_statistics():
         else:
             print("No score available")
     else:
-        print("Member '" + name + "' not found")
-            
-
-                             
-    
-
+        print("Member '" + name + "' not found") # Error message if member is not found
 
     
 if __name__ == "__main__":
