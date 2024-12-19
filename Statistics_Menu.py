@@ -222,8 +222,41 @@ def meeting_details():
         print("There are no details availabe for '" + title.capitalize() +"' . ")
 
 # Function to view stats of specific members
-def member_details():
-    name = input("Enter the name of the member you want to review").strip() # Prompt the user to enter a name
+def member_statistics():
+    name = input("Enter the name of the member you want to review: ").strip() # Prompt the user to enter a name
+    if name in membership: # Check that the name is in membership dictionary
+        print("\nMember: ", name.capitalize()) # Print the name of the member if it is in thedictionary
+        scores = [] # Empty list to store books and scores for the member
+        for book, details in meetings.items(): # Loop through all the books
+            if name in details["Scores"]: # Check if the name is in the scores section of the current book
+                scores.append((book, details["Scores"][name])) # append a tuple to 'scores' that contains the book name and the members score
+        valid_scores = [score for _, score in scores if score is not None]# Filter out the scores that do not have a value to use in calculating statistics
+        print("Books and Marks: ")#Display the book and marks
+        for book, score in scores:
+            print("  " + book.capitalize() + ": " + (str(score) if score is not None else "Missing"))
+                              
+        # Calculate statistics for the member
+        if valid_scores:
+            mean = sum(valid_scores) / len(valid_scores) # Calculate mean, only use scores that are not 'missing'
+            st_dev = (sum((x - mean) ** 2 for x in valid_scores) / len(valid_scores)*0.5) # Calculate Standard Deviation
+            min_score = min(valid_scores) # Lowest value user has given
+            max_score = max(valid_scores) # Highest score user has given
+            missed = len(scores) - len(valid_scores) # Calculate number of 'missing' scores (number of meetings missed)
+            missed_percent = (missed / len(scores)) * 100 if scores else 0 # Misesed meetings as a percentage
+            #display Statistics
+            print("\n" + name + " 's Statistics: ")
+            print(" Mean Score " + str(round(mean, 2)))
+            print(" Standard Deviation " + str(round(st_dev, 2)))
+            print(" Lowest Score: " + str(min_score))
+            print(" Highest score: " + str(max_score))
+            print(" Meetings Missed: " + str(round(missed_percent, 2 )) + "%")
+        else:
+            print("No score available")
+    else:
+        print("Member '" + name + "' not found")
+            
+
+                             
     
 
 
